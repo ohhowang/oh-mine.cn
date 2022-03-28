@@ -11,19 +11,19 @@ date: 2022/3/28
 ![dog](https://raw.githubusercontent.com/oh-mine/oh-mine.cn/main/posts/images/1.jpg)
 
 ```html
-<img class="img1" width="300" src="xxx.jpg" />
+<img width="300" src="xxx.jpg" />
+<img class="img1" src="xxx.jpg" />
 <img class="img2" src="xxx.jpg" />
-<img class="img3" src="xxx.jpg" />
 ```
 
 ```css
-.img2 {
+.img1 {
   width: 180px;
   height: 300px;
   object-fit: cover;
 }
 
-.img3 {
+.img2 {
   width: 300px;
   height: 200px;
   object-fit: cover;
@@ -67,7 +67,7 @@ div {
 }
 ```
 
-# 覆盖显示
+# 铺满显示
 
 ```css
 background-image: url(xxx.jpg);
