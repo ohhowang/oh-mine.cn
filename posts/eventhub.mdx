@@ -1,0 +1,57 @@
+---
+title: EventHub
+description: ''
+date: 2022/4/13
+---
+
+# 封装 EventHub
+
+```javascript
+class EventHub {
+  #events = {};
+  // 订阅
+  on(eventName, fn) {
+    this.#events[eventName] = this.#events[eventName] || [];
+    this.#events[eventName].push(fn);
+  }
+  // 发布
+  emit(eventName, data) {
+    if (!this.#events[eventName]) return;
+    this.#events[eventName].map((fn) => fn.call(undefined, data));
+  }
+  off(eventName, fn) {
+    if (!this.#events[eventName]) return;
+    const index = this.#events[eventName].indexOf(fn);
+    if (index < 0) return;
+    this.#events[eventName].splice(index, 1);
+  }
+  once(eventName, fn) {
+    const onceFn = (data) => {
+      fn(data);
+      this.off(eventName, onceFn);
+    };
+    this.on(eventName, onceFn);
+  }
+}
+```
+
+# test
+
+```javascript
+const eventHub = new EventHub();
+
+const fn = (data) => console.log('click1', data);
+eventHub.on('click', fn);
+eventHub.on('click', (data) => console.log('click2', data));
+
+eventHub.once('click', (data) => console.log('once', data));
+
+eventHub.emit('click', 'hello');
+eventHub.off('click', fn);
+eventHub.emit('click', 'world');
+
+// click1 hello
+// click2 hello
+// once hello
+// click2 world
+```
