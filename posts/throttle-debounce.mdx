@@ -1,0 +1,67 @@
+---
+title: throttle(节流)、debouce(防抖)
+description: ''
+date: 2022/4/10
+---
+
+- 防抖：input 输入停止 1000ms 后触发
+- 节流：send 频繁点击，在 1000ms 内只触发一次
+
+![dog](https://raw.githubusercontent.com/oh-mine/oh-mine.cn/main/posts/images/3.jpg)
+
+```javascript
+<input id=msg value="hello">
+<button id=btn>send</button>
+
+const click = (event) => { console.log("send msg: ", msg.value) }
+const input = (event) => { console.log("value: " + msg.value) }
+
+msg.addEventListener('click', throttle(click, 1000))
+btn.addEventListener('input', debounce(input, 1000))
+```
+
+# throttle
+
+```javascript
+const throttle = (fn, delay) => {
+  let timer = null;
+
+  return function () {
+    const ctx = this;
+    const args = arguments;
+
+    if (!timer) {
+      fn.apply(ctx, args);
+      timer = setTimeout(() => {
+        clearTimeout(timer);
+        timer = null;
+      }, delay);
+    }
+  };
+};
+```
+
+# debounce
+
+```javascript
+const debounce = (fn, delay) => {
+  let timer = null;
+
+  return function () {
+    const ctx = this;
+    const args = arguments;
+
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+      return;
+    }
+
+    timer = setTimeout(() => {
+      fn.apply(ctx, args);
+      clearTimeout(timer);
+      timer = null;
+    }, delay);
+  };
+};
+```
