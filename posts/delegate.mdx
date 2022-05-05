@@ -1,0 +1,62 @@
+---
+title: Delegate
+description: ''
+date: 2022/4/19
+---
+
+# 事件委托
+
+## version 1
+
+```javascript
+<ul id="ul">
+  <li>
+    <span>1</span>
+  </li>
+  <li>
+    <span>2</span>
+  </li>
+  <li>
+    <span>3</span>
+  </li>
+</ul>;
+
+ul.addEventListener('click', (event) => {
+  if (event.target.nodeName.toLowerCase() === 'li') {
+    console.log(event.target.innerHTML);
+  }
+});
+```
+
+## version 2
+
+```javascript
+<ul id="ul2">
+  <li>
+    <span>1</span>
+  </li>
+  <li>
+    <span>2</span>
+  </li>
+  <li>
+    <span>3</span>
+  </li>
+</ul>;
+
+function delegate(element, eventType, selector, fn) {
+  element.addEventListener(eventType, (e) => {
+    let el = e.target;
+    while (!el.matches(selector)) {
+      if (element === el) {
+        el = null;
+        break;
+      }
+      el = el.parentNode;
+    }
+    el && fn.call(el, e, el);
+  });
+}
+delegate(ul2, 'click', 'li', (event, el) => {
+  console.log(event.target.innerHTML);
+});
+```
