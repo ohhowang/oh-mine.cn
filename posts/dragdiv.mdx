@@ -1,0 +1,56 @@
+---
+title: Drag Div
+description: ''
+date: 2022/4/23
+---
+
+# 可拖拽 div
+
+## HTML
+
+```html
+<div id="box"></div>
+```
+
+## CSS
+
+```css
+#box {
+  background-color: greenyellow;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  transform: translate(100px, 100px);
+}
+```
+
+## JS
+
+```javascript
+let isDrag = false;
+const prevPos = { x: 0, y: 0 };
+
+box.addEventListener('mousedown', (event) => {
+  isDrag = true;
+  prevPos.x = event.clientX;
+  prevPos.y = event.clientY;
+});
+
+document.addEventListener('mousemove', (event) => {
+  if (isDrag) {
+    const currentMouseX = event.clientX;
+    const currentMouseY = event.clientY;
+    const moveX = currentMouseX - prevPos.x;
+    const moveY = currentMouseY - prevPos.y;
+    // box position left/top/width/height
+    const { left, top, width, height } = box.getBoundingClientRect();
+    box.style.transform = `translate(${left + moveX}px, ${top + moveY}px)`;
+    prevPos.x = currentMouseX;
+    prevPos.y = currentMouseY;
+  }
+});
+
+document.addEventListener('mouseup', (event) => {
+  isDrag = false;
+});
+```
